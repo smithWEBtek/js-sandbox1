@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Page 143</title>
+</head>
+
+<body>
+  <div id="main"></div>
+</body>
+
+<script type="application/javascript">
+  let mainDiv = document.getElementById("main")
+  const station = {
+    name: "ZB1",
+    readings: [
+      { temp: 47, time: "2016-11-10 09:10" },
+      { temp: 53, time: "2016-11-10 09:20" },
+      { temp: 58, time: "2016-11-10 09:30" },
+      { temp: 53, time: "2016-11-10 09:40" },
+      { temp: 51, time: "2016-11-10 09:50" },
+    ]
+  };
+
+  const numbers = [48, 55, 104]
+
+  class NumberRange {
+    constructor(min, max) {
+      this._data = { min: min, max: max };
+    }
+    get min() { return this._data.min; }
+    get max() { return this._data.max; }
+  }
+
+  //  note I had to do the work of finding min and max before passing to NumberRange
+  let range1 = new NumberRange(Math.min(...numbers), Math.max(...numbers))
+
+  function readingsOutsideRange(station, range) {
+    return station.readings
+      .filter(r => r.temp < range.min || r.temp > range.max);
+  }
+
+  let result = readingsOutsideRange(station, range1)[0].temp
+
+  mainDiv.innerHTML = `<h1> Station temp out of range: ${result}</h1>`
+
+  const stationHTML = station.readings.map(reading => {
+    return (`<p>Temp: ${reading.temp}deg Time: ${reading.time}<p>`)
+  }).join('')
+
+  mainDiv.innerHTML += `<p>station data: ${stationHTML}</p>`
+
+</script>
+
+</html>
